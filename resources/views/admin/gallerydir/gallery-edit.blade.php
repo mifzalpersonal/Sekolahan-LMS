@@ -14,7 +14,7 @@
 
         <div>
             <label>Judul:</label><br>
-            <input type="text" name="title" value="{{ old('title', $gallery->title) }}" required>
+            <input type="text" name="title" value="{{ old('title', $gallery->title) }}">
         </div>
 
         <br>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\NewsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,4 +30,5 @@ Route::get('/admin', function () {
 Route::resource('gallery', GalleryController::class)->names('galleries');
 
 Route::resource('/admin/gallery', GalleryController::class)->names('galleries-admin');
+Route::resource('/admin/news', NewsController::class)->names('news-admin');
 

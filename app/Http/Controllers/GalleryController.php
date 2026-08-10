@@ -11,13 +11,13 @@ class GalleryController extends Controller
     public function index()
     {
         $galleriesmodel = Gallery::all();
-        return view('admin.gallery', compact('galleriesmodel'));
+        return view('admin.gallerydir.gallery', compact('galleriesmodel'));
     }
 
 
     public function create()
     {
-        return view('admin.gallery-create');
+        return view('admin.gallerydir.gallery-create');
     }
 
 
@@ -58,15 +58,15 @@ class GalleryController extends Controller
     public function edit($id) {
         $gallery = Gallery::findOrFail($id);
 
-        return view('admin.gallery-edit', compact('gallery'));
+        return view('admin.gallerydir.gallery-edit', compact('gallery'));
     }
 
     public function update(Request $request, $id) {
         $gallery = Gallery::findOrFail($id);
 
         $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:51200',
+            'title' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
             'description' => 'nullable|string|max:255'
         ]);
 
