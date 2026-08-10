@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Gallery;
 
@@ -18,6 +19,7 @@ class GalleryController extends Controller
     {
         return view('admin.gallery-create');
     }
+
 
     public function store(Request $request)
     {
@@ -37,4 +39,26 @@ class GalleryController extends Controller
 
         return redirect()->route('galleries-admin.index');
     }
+
+
+    public function destroy($id)
+    {
+        $gallery = Gallery::findOrFail($id);
+
+        if ($gallery->path && Storage::disk('public')->exists($gallery->path)) {
+            Storage::disk('public')->delete($gallery->path);
+        };
+
+        $gallery->delete();
+
+        return redirect()->route('galleries-admin.index');
+    }
+    
+
+    public function edit($id) {
+        $gallery = Gallery::findOrFail($id);
+
+        return view('admin.gallery-edit', compact('$gallery'));
+    }
+
 }
