@@ -53,12 +53,38 @@ class GalleryController extends Controller
 
         return redirect()->route('galleries-admin.index');
     }
-    
+
 
     public function edit($id) {
         $gallery = Gallery::findOrFail($id);
 
-        return view('admin.gallery-edit', compact('$gallery'));
+        return view('admin.gallery-edit', compact('gallery'));
     }
 
+    public function update(Request $request, $id) {
+        $gallery = Gallery::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:51200',
+            'description' => 'nullable|string|max:255'
+        ]);
+
+        #kalau dia nambahin foto
+        if ($request->hasFile('image')) {
+            if ($gallery->path && Storage::disk('public')->exists($gallery->path)) {
+                Storage::disk('public')->delete($gallery->path);
+            };
+
+            $gallery->path = $request->file('image')->store('galleries', 'public');
+        }
+
+        $gallery->title = $request->title;
+        $gallery->description = $request->description;
+        $gallery->save();
+
+        return redirect()->route('galleries-admin.index');
+
+
+    }
 }
