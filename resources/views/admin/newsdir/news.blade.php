@@ -105,10 +105,12 @@
         </div>
 
         <!-- Upload Button -->
-        <button class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-4 py-2 rounded-lg text-xs flex items-center gap-2 transition shadow-sm">
-          <i data-lucide="cloud-upload" class="w-4 h-4"></i>
-          Upload New News
-        </button>
+        <a href="{{ route('news-admin.create') }}">
+          <button class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-4 py-2 rounded-lg text-xs flex items-center gap-2 transition shadow-sm">
+            <i data-lucide="cloud-upload" class="w-4 h-4"></i>
+            Upload New News
+          </button>
+        </a>
       </div>
     </header>
 
@@ -122,7 +124,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200/70 shadow-sm flex items-start justify-between">
           <div>
             <p class="text-[11px] font-bold text-slate-500 leading-tight mb-2">Total Articles</p>
-            <h3 class="text-3xl font-extrabold text-slate-800 mb-2">128</h3>
+            <h3 class="text-3xl font-extrabold text-slate-800 mb-2">{{ $newsies->count() }}</h3>
             <span class="text-[10px] font-semibold text-sky-600 flex items-center gap-1">
               <i data-lucide="trending-up" class="w-3 h-3"></i> +4 this week
             </span>
@@ -225,127 +227,56 @@
             </thead>
             <tbody class="divide-y divide-slate-100 text-slate-700">
 
-              <!-- Row 1 -->
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-4 px-6 max-w-xs">
-                  <h4 class="font-bold text-slate-900 leading-snug mb-1">Breakthrough in Sustainable Quantum Computing Research</h4>
-                  <p class="text-[11px] text-slate-400 truncate">Breaking frontiers in environmental tech...</p>
-                </td>
-                <td class="py-4 px-6">
-                  <span class="px-3 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-sky-600">Research</span>
-                </td>
-                <td class="py-4 px-6">
-                  <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold flex items-center justify-center shrink-0">JD</span>
-                    <span class="text-xs font-medium text-slate-800 leading-tight">Jane<br>Doe</span>
-                  </div>
-                </td>
-                <td class="py-4 px-6 text-slate-500 text-[11px]">Oct 24, 2024</td>
-                <td class="py-4 px-6">
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Published
-                  </span>
-                </td>
-                <td class="py-4 px-6 text-right">
-                  <div class="flex items-center justify-end gap-2 text-slate-400">
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="eye" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-rose-600 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                  </div>
-                </td>
-              </tr>
+  @forelse ($newsies as $news)
+    <tr class="hover:bg-slate-50/60 transition">
+      <!-- Title & Preview Content -->
+      <td class="py-4 px-6 max-w-xs">
+        <h4 class="font-bold text-slate-900 leading-snug mb-1">{{ $news->title }}</h4>
+        <p class="text-[11px] text-slate-400 truncate">{{ Str::limit(strip_tags($news->content), 60) }}</p>
+      </td>
 
-              <!-- Row 2 -->
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-4 px-6 max-w-xs">
-                  <h4 class="font-bold text-slate-900 leading-snug mb-1">New Global Leadership Minor Introduced</h4>
-                  <p class="text-[11px] text-slate-400 truncate">Available for enrollment starting spring...</p>
-                </td>
-                <td class="py-4 px-6">
-                  <span class="px-3 py-1 rounded-full text-[10px] font-semibold bg-indigo-100 text-indigo-600">Academics</span>
-                </td>
-                <td class="py-4 px-6">
-                  <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold flex items-center justify-center shrink-0">AU</span>
-                    <span class="text-xs font-medium text-slate-800 leading-tight">Admin<br>User</span>
-                  </div>
-                </td>
-                <td class="py-4 px-6 text-slate-500 text-[11px]">Oct 22, 2024</td>
-                <td class="py-4 px-6">
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-sky-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span> Scheduled
-                  </span>
-                </td>
-                <td class="py-4 px-6 text-right">
-                  <div class="flex items-center justify-end gap-2 text-slate-400">
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="eye" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-rose-600 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                  </div>
-                </td>
-              </tr>
+      <!-- Thumbnail Preview -->
+      <td class="py-4 px-6">
+        @if($news->thumbnail)
+          <img src="{{ asset('storage/' . $news->thumbnail) }}" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
+        @else
+          <span class="text-[10px] text-slate-400 italic">No Thumbnail</span>
+        @endif
+      </td>
 
-              <!-- Row 3 -->
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-4 px-6 max-w-xs">
-                  <h4 class="font-bold text-slate-900 leading-snug mb-1">Campus Expansion: East Wing Renovation</h4>
-                  <p class="text-[11px] text-slate-400 truncate">Updates on phase 2 construction...</p>
-                </td>
-                <td class="py-4 px-6">
-                  <span class="px-3 py-1 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600">Life</span>
-                </td>
-                <td class="py-4 px-6">
-                  <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold flex items-center justify-center shrink-0">JD</span>
-                    <span class="text-xs font-medium text-slate-800 leading-tight">Jane<br>Doe</span>
-                  </div>
-                </td>
-                <td class="py-4 px-6 text-slate-500 text-[11px]">Oct 20, 2024</td>
-                <td class="py-4 px-6">
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Draft
-                  </span>
-                </td>
-                <td class="py-4 px-6 text-right">
-                  <div class="flex items-center justify-end gap-2 text-slate-400">
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="eye" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-rose-600 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                  </div>
-                </td>
-              </tr>
+      <!-- Date -->
+      <td class="py-4 px-6 text-slate-500 text-[11px]">
+        {{ $news->created_at->format('d M Y') }}
+      </td>
 
-              <!-- Row 4 -->
-              <tr class="hover:bg-slate-50/60 transition">
-                <td class="py-4 px-6 max-w-xs">
-                  <h4 class="font-bold text-slate-900 leading-snug mb-1">Annual Scholarship Gala Announced</h4>
-                  <p class="text-[11px] text-slate-400 truncate">Join us for an evening of giving...</p>
-                </td>
-                <td class="py-4 px-6">
-                  <span class="px-3 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-sky-600">Campus</span>
-                </td>
-                <td class="py-4 px-6">
-                  <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold flex items-center justify-center shrink-0">AU</span>
-                    <span class="text-xs font-medium text-slate-800 leading-tight">Admin<br>User</span>
-                  </div>
-                </td>
-                <td class="py-4 px-6 text-slate-500 text-[11px]">Oct 18, 2024</td>
-                <td class="py-4 px-6">
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Published
-                  </span>
-                </td>
-                <td class="py-4 px-6 text-right">
-                  <div class="flex items-center justify-end gap-2 text-slate-400">
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-slate-700 transition"><i data-lucide="eye" class="w-4 h-4"></i></button>
-                    <button class="p-1 hover:text-rose-600 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                  </div>
-                </td>
-              </tr>
+      <!-- Actions (Edit & Delete) -->
+      <td class="py-4 px-6 text-right">
+        <div class="flex items-center justify-end gap-2 text-slate-400">
+          <!-- Button Edit -->
+          <a href="{{ route('news-admin.edit', $news->id) }}" class="p-1 hover:text-slate-700 transition">
+            <i data-lucide="edit-2" class="w-4 h-4"></i>
+          </a>
 
-            </tbody>
+          <!-- Form Hapus -->
+          <form action="{{ route('news-admin.destroy', $news->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="p-1 hover:text-rose-600 transition">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </form>
+        </div>
+      </td>
+    </tr>
+  @empty
+    <tr>
+      <td colspan="4" class="py-8 text-center text-slate-400 text-xs">
+        Belum ada berita yang diunggah.
+      </td>
+    </tr>
+  @endforelse
+
+</tbody>
           </table>
         </div>
 
