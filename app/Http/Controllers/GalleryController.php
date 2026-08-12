@@ -65,9 +65,9 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
 
         $request->validate([
-            'title' => 'nullable|string|max:255',
+            'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:51200',
-            'description' => 'nullable|string|max:255'
+            'description' => 'required|string|max:255'
         ]);
 
         #kalau dia nambahin foto
