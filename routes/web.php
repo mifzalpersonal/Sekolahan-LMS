@@ -31,4 +31,5 @@ Route::resource('gallery', GalleryController::class)->names('galleries');
 
 Route::resource('/admin/gallery', GalleryController::class)->names('galleries-admin');
 Route::resource('/admin/news', NewsController::class)->names('news-admin');
+Route::resource('/admin/ppdb', PpdbController::class)->names('ppdb-admin');
 
