@@ -62,13 +62,13 @@ class PpdbController extends Controller
     
     public function edit(Ppdb $ppdb)
     {
-        //
+        return view('admin.ppdbdir.ppdb-edit.blade.php');
     }
 
     
-    public function update(Request $request, Ppdb $ppdb)
+    public function update(Request $request, $id)
     {
-        //
+        
     }
 
     
