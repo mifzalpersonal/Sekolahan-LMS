@@ -37,8 +37,8 @@ class PpdbController extends Controller
 
             // pemisah
 
-            'nama_ortu' => 'required|numeric|digits:20',
-            'nomor_hp_ortu'=> 'required|string|max:255',
+            'nama_ortu' => 'required|string|max:255',
+            'nomor_hp_ortu'=> 'required|numeric|digits:20',
 
             //pemisah lagi
 
@@ -68,7 +68,47 @@ class PpdbController extends Controller
     
     public function update(Request $request, $id)
     {
-        
+        $ppdb = Ppdb::findOrFail($id);
+
+        $request->validate([
+            'nisn' => 'required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn', 
+            'nik' => 'required|numeric|digits:20', 
+            'nama' => 'required|string|max:255', 
+            'kelamin' => 'required|in:L,P',
+            'tanggal_lahir' => 'required|date',
+            'tempat_lahir' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'nomor_hp_siswa' => 'required|numeric|digits:20',
+
+            // pemisah
+
+            'nama_ortu' => 'required|string|max:255',
+            'nomor_hp_ortu'=> 'required|numeric|digits:20',
+
+            //pemisah lagi
+
+            'asal_sekolah' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+            'status' => 'required|in:terverifikasi, belumverif',
+
+        ]);
+
+        $ppdb->nisn = $request->nisn;
+        $ppdb->nik = $request->nik;
+        $ppdb->nama = $request->nama;
+        $ppdb->kelamin = $request->kelamin;
+        $ppdb->tanggal_lahir = $request->tanggal_lahir;
+        $ppdb->kelamin = $tempat_lahir->tempat_lahir;
+        $ppdb->alamat = $request->alamat;
+        $ppdb->nomor_hp_siswa = $request->nomor_hp_siswa;
+        $ppdb->nama_ortu = $request->nama_ortu;
+        $ppdb->nomor_hp_ortu = $request->nomor_hp_ortu;
+        $ppdb->asal_sekolah = $request->asal_sekolah;
+        $ppdb->jurusan = $request->jurusan;
+        $ppdb->status = $request->status;
+        $pddb->save();
+
+        return route('ppdb-index.blade.php');
     }
 
     
