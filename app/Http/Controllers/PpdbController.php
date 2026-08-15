@@ -9,26 +9,26 @@ use Illuminate\Support\Str;
 
 class PpdbController extends Controller
 {
-    
+
     public function index()
     {
-        $ppdbs = Ppdb::all();
-        return view('admin.ppdbdir.ppdb', compact('ppdbs'));
+        $ppdb = Ppdb::all();
+        return view('admin.ppdbdir.ppdb', compact('ppdb'));
     }
 
-   
+
     public function create()
     {
         return view ('admin.ppdbdir.ppdb-create');
     }
 
-   
+
     public function store(Request $request)
     {
         $request->validate([
-            'nisn' => 'required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn', 
-            'nik' => 'required|numeric|digits:20', 
-            'nama' => 'required|string|max:255', 
+            'nisn' => 'required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn',
+            'nik' => 'required|numeric|digits:20',
+            'nama' => 'required|string|max:255',
             'kelamin' => 'required|in:L,P',
             'tanggal_lahir' => 'required|date',
             'tempat_lahir' => 'required|string|max:255',
@@ -51,29 +51,31 @@ class PpdbController extends Controller
         $validated['asal_sekolah'] = Str::title(mb_strtolower($request->asal_sekolah));
         $validated['tempat_lahir'] = Str::title(mb_strtolower($request->tempat_lahir));
         $validated['nama_ortu'] = Str::title(mb_strtolower($request->nama_ortu));
+
+        return redirect()->route(ppdb-admin.index);
     }
 
-   
+
     public function show(Ppdb $ppdb)
     {
         //
     }
 
-    
+
     public function edit(Ppdb $ppdb)
     {
         return view('admin.ppdbdir.ppdb-edit.blade.php');
     }
 
-    
+
     public function update(Request $request, $id)
     {
         $ppdb = Ppdb::findOrFail($id);
 
         $request->validate([
-            'nisn' => 'required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn', 
-            'nik' => 'required|numeric|digits:20', 
-            'nama' => 'required|string|max:255', 
+            'nisn' => 'required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn',
+            'nik' => 'required|numeric|digits:20',
+            'nama' => 'required|string|max:255',
             'kelamin' => 'required|in:L,P',
             'tanggal_lahir' => 'required|date',
             'tempat_lahir' => 'required|string|max:255',
@@ -108,12 +110,15 @@ class PpdbController extends Controller
         $ppdb->status = $request->status;
         $pddb->save();
 
-        return route('ppdb-index.blade.php');
+        return redirect()->route('ppdb-admin.index');
     }
 
-    
-    public function destroy(Ppdb $ppdb)
+
+    public function destroy(Request $request, $id)
     {
-        //
+        $ppdb = Ppdb::findOrFail();
+        $ppdb::delete();
+
+        return redirect()->route("ppdb-admin.index");
     }
 }
