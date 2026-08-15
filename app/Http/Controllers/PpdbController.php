@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ppdb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 
 class PpdbController extends Controller
@@ -25,8 +26,8 @@ class PpdbController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nisn' => 'required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn',
+       $validate = $request->validate([
+            'nisn' => ['required|numeric|digits:20|exists:accepted_students,nisn|unique:ppdbs,nisn'],
             'nik' => 'required|numeric|digits:20',
             'nama' => 'required|string|max:255',
             'kelamin' => 'required|in:L,P',
@@ -52,7 +53,9 @@ class PpdbController extends Controller
         $validated['tempat_lahir'] = Str::title(mb_strtolower($request->tempat_lahir));
         $validated['nama_ortu'] = Str::title(mb_strtolower($request->nama_ortu));
 
-        return redirect()->route(ppdb-admin.index);
+        Ppdb::create($validated);
+
+        return redirect()->route(ppdb-admin.index)
     }
 
 
@@ -64,7 +67,8 @@ class PpdbController extends Controller
 
     public function edit(Ppdb $ppdb)
     {
-        return view('admin.ppdbdir.ppdb-edit.blade.php');
+        $id = Ppdb::findOrFail();
+        return view('admin.ppdbdir.ppdb-edit');
     }
 
 
@@ -100,7 +104,7 @@ class PpdbController extends Controller
         $ppdb->nama = $request->nama;
         $ppdb->kelamin = $request->kelamin;
         $ppdb->tanggal_lahir = $request->tanggal_lahir;
-        $ppdb->kelamin = $tempat_lahir->tempat_lahir;
+        $ppdb->tempat_lahir = $tempat_lahir->tempat_lahir;
         $ppdb->alamat = $request->alamat;
         $ppdb->nomor_hp_siswa = $request->nomor_hp_siswa;
         $ppdb->nama_ortu = $request->nama_ortu;
@@ -116,9 +120,9 @@ class PpdbController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $ppdb = Ppdb::findOrFail();
-        $ppdb::delete();
+        $ppdb = Ppdb::findOrFail($id);
+        $ppdb->delete();
 
-        return redirect()->route("ppdb-admin.index");
+        return redirect()->route("ppdb-admin.index")
     }
 }
