@@ -33,7 +33,7 @@ return new class extends Migration
             
             $table->string('asal_sekolah');
             $table->string('jurusan');
-            $table->enum('status', ['terverifikasi', 'belumverif']);
+            $table->enum('status', ['terverifikasi','belumverif']);
             $table->timestamps();
         });
     }
