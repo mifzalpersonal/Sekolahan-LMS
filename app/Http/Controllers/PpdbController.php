@@ -55,7 +55,7 @@ class PpdbController extends Controller
 
         Ppdb::create($validated);
 
-        return redirect()->route(ppdb-admin.index)
+        return redirect()->route(ppdb-admin.index);
     }
 
 
@@ -123,6 +123,6 @@ class PpdbController extends Controller
         $ppdb = Ppdb::findOrFail($id);
         $ppdb->delete();
 
-        return redirect()->route("ppdb-admin.index")
+        return redirect()->route("ppdb-admin.index");
     }
 }
